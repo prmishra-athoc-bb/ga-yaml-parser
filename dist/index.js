@@ -469,6 +469,7 @@ exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(147));
 const os = __importStar(__nccwpck_require__(37));
+const uuid_1 = __nccwpck_require__(5840);
 const utils_1 = __nccwpck_require__(278);
 function issueFileCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
@@ -483,6 +484,7 @@ function issueFileCommand(command, message) {
     });
 }
 exports.issueFileCommand = issueFileCommand;
+
 function prepareKeyValueMessage(key, value) {
   const delimiter = `ghadelimiter_${uuid_1.v4()}`;
   const convertedValue = utils_1.toCommandValue(value);
@@ -6126,6 +6128,92 @@ module.exports = require("https");
 module.exports = require("net");
 
 /***/ }),
+
+/***/ 5840:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+  "use strict";
+
+
+  Object.defineProperty(exports, "__esModule", ({
+    value: true
+  }));
+  Object.defineProperty(exports, "v1", ({
+    enumerable: true,
+    get: function () {
+      return _v.default;
+    }
+  }));
+  Object.defineProperty(exports, "v3", ({
+    enumerable: true,
+    get: function () {
+      return _v2.default;
+    }
+  }));
+  Object.defineProperty(exports, "v4", ({
+    enumerable: true,
+    get: function () {
+      return _v3.default;
+    }
+  }));
+  Object.defineProperty(exports, "v5", ({
+    enumerable: true,
+    get: function () {
+      return _v4.default;
+    }
+  }));
+  Object.defineProperty(exports, "NIL", ({
+    enumerable: true,
+    get: function () {
+      return _nil.default;
+    }
+  }));
+  Object.defineProperty(exports, "version", ({
+    enumerable: true,
+    get: function () {
+      return _version.default;
+    }
+  }));
+  Object.defineProperty(exports, "validate", ({
+    enumerable: true,
+    get: function () {
+      return _validate.default;
+    }
+  }));
+  Object.defineProperty(exports, "stringify", ({
+    enumerable: true,
+    get: function () {
+      return _stringify.default;
+    }
+  }));
+  Object.defineProperty(exports, "parse", ({
+    enumerable: true,
+    get: function () {
+      return _parse.default;
+    }
+  }));
+  
+  var _v = _interopRequireDefault(__nccwpck_require__(8628));
+  
+  var _v2 = _interopRequireDefault(__nccwpck_require__(6409));
+  
+  var _v3 = _interopRequireDefault(__nccwpck_require__(5122));
+  
+  var _v4 = _interopRequireDefault(__nccwpck_require__(9120));
+  
+  var _nil = _interopRequireDefault(__nccwpck_require__(5332));
+  
+  var _version = _interopRequireDefault(__nccwpck_require__(1595));
+  
+  var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+  
+  var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+  
+  var _parse = _interopRequireDefault(__nccwpck_require__(2746));
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  
+  /***/ }),
 
 /***/ 37:
 /***/ ((module) => {
