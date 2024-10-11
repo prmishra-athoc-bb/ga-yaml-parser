@@ -134,7 +134,8 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
       });
   };
   Object.defineProperty(exports, "__esModule", ({ value: true }));
-  exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+  //exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+  exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
   const command_1 = __nccwpck_require__(351);
   const file_command_1 = __nccwpck_require__(717);
   const utils_1 = __nccwpck_require__(278);
@@ -172,14 +173,13 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
     const convertedVal = utils_1.toCommandValue(val);
     process.env[name] = convertedVal;
     const filePath = process.env['GITHUB_ENV'] || '';
-    
     if (filePath) {
-        const envVar = `${name}=${convertedVal}${os.EOL}`;
-        // Append the environment variable to the GITHUB_ENV file
-        fs.appendFileSync(filePath, envVar, 'utf8');
-    } else {
-        // In case GITHUB_ENV is not set, you can handle this or log an error
-        console.log(`GITHUB_ENV not found. Unable to set environment variable ${name}.`);
+        const delimiter = '_GitHubActionsFileCommandDelimeter_';
+        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
+        file_command_1.issueCommand('ENV', commandValue);
+    }
+    else {
+        command_1.issueCommand('set-env', { name }, convertedVal);
     }
   }
   exports.exportVariable = exportVariable;
@@ -270,19 +270,19 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
    * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function setOutput(name, value) {
-      //process.stdout.write(os.EOL);
-      // command_1.issueCommand('set-output', { name }, value);
-      const githubOutputPath = process.env.GITHUB_OUTPUT || '';
-      if (githubOutputPath) {
-          // Write to the output file for GitHub Actions
-          const output = `${name}=${value}${os.EOL}`;
-          fs.appendFileSync(githubOutputPath, output);
-      } else {
-          console.log(`No GITHUB_OUTPUT environment variable found.`);
-      }
-  }
-  exports.setOutput = setOutput;
+  // function setOutput(name, value) {
+  //     //process.stdout.write(os.EOL);
+  //     // command_1.issueCommand('set-output', { name }, value);
+  //     const githubOutputPath = process.env.GITHUB_OUTPUT || '';
+  //     if (githubOutputPath) {
+  //         // Write to the output file for GitHub Actions
+  //         const output = `${name}=${value}${os.EOL}`;
+  //         fs.appendFileSync(githubOutputPath, output);
+  //     } else {
+  //         console.log(`No GITHUB_OUTPUT environment variable found.`);
+  //     }
+  // }
+  // exports.setOutput = setOutput;
   /**
    * Enables or disables the echoing of commands into stdout for the rest of the step.
    * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
@@ -6206,14 +6206,16 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
   
       if (key) {
         const flattened_object = flattenObject(content);
-        core.setOutput("result", flattened_object[key]);
+        //core.setOutput("result", flattened_object[key]);
+        core.exportVariable("result", flattened_object[key]);
       } else {
         const flattened_object = flattenObject(content, false, delimiter);
         const keys = Object.keys(flattened_object);
         keys.forEach((current) => {
           if (flattened_object[current] != null) {
             if (returnToOutputs.toLowerCase() == "true")
-              core.setOutput(current, flattened_object[current]);
+              //core.setOutput(current, flattened_object[current]);
+              core.exportVariable(current, flattened_object[current]);
             if (esportToEnvs.toLowerCase() == "true")
               core.exportVariable(current, flattened_object[current]);
           }
