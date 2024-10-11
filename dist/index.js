@@ -269,7 +269,9 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
   function setOutput(name, value) {
       process.stdout.write(os.EOL);
       info(`Adding to set-output var ${name}`)
-      command_1.issueCommand('set-output', { name }, value);
+      const fs = require('fs')
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`)
+      //command_1.issueCommand('set-output', { name }, value);
   }
   exports.setOutput = setOutput;
   /**
