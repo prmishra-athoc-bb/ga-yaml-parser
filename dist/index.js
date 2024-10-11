@@ -271,7 +271,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setOutput(name, value) {
-    const convertedVal = utils_1.toCommandValue(val);
+    const convertedVal = utils_1.toCommandValue(value);
     process.env[name] = convertedVal;
     const filePath = process.env['GITHUB_OUTPUT'] || '';
     if (filePath) {
