@@ -277,7 +277,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
     if (filePath) {
         const delimiter = '_GitHubActionsFileCommandDelimeter_';
         const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        command_1.issueCommand('OUTPUT', commandValue);
+        file_command_1.issueCommand('OUTPUT', commandValue);
     }
     else {
         console.log(`No GITHUB_OUTPUT environment variable found.`);
