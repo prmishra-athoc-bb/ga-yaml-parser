@@ -272,16 +272,19 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setOutput(name, value) {
+    const fs = require('fs')
     const convertedVal = utils_1.toCommandValue(value);
     process.env[name] = convertedVal;
-    const filePath = process.env['GITHUB_ENV'] || '';
+    const filePath = process.env['GITHUB_OUTPUT'] || '';
     if (filePath) {
         info(`Adding to output var ${name}`)
-        const delimiter = '_GitHubActionsFileCommandDelimeter_';
-        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        file_command_1.issueCommand('ENV', commandValue);
+        fs.appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`)
+        // const delimiter = '_GitHubActionsFileCommandDelimeter_';
+        // const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
+        // file_command_1.issueCommand('ENV', commandValue);
     }
     else {
+      info(`missing GITHUB_OUTPUT. Adding to output var ${name} using set-output command`)
       command_1.issueCommand('set-output', { name }, convertedVal);
     }
   }
