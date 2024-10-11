@@ -274,11 +274,16 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
   function setOutput(name, value) {
     const fs = require('fs');
     const filePath = process.env['GITHUB_OUTPUT'] || '';
-    if (filePath) {
-        // Write to GITHUB_OUTPUT file
-        fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`, 'utf8');
+    
+    // If GITHUB_OUTPUT path is missing, create the file in the current working directory
+    if (!filePath) {
+        console.log(`creating the GITHUB_OUTPUT file path and setting it to env var`)
+        const outputFilePath = path.join(process.cwd(), 'GITHUB_OUTPUT');
+        fs.writeFileSync(outputFilePath, `${name}=${value}${os.EOL}`, 'utf8');
+        process.env['GITHUB_OUTPUT'] = outputFilePath; // Set it in env for future use
     } else {
-        console.log(`GITHUB_OUTPUT not found. Unable to set output variable ${name}.`);
+        // If file already exists, append the value to it
+        fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`, 'utf8');
     }
   }
   exports.setOutput = setOutput;
