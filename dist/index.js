@@ -270,17 +270,15 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
    * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setOutput(name, value) {
-    const convertedVal = utils_1.toCommandValue(value);
-    process.env[name] = convertedVal;
+    const fs = require('fs');
     const filePath = process.env['GITHUB_OUTPUT'] || '';
     if (filePath) {
-        const delimiter = '_GitHubActionsFileCommandDelimeter_';
-        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        file_command_1.issueCommand('OUTPUT', commandValue);
-    }
-    else {
-        console.log(`No GITHUB_OUTPUT environment variable found.`);
+        // Write to GITHUB_OUTPUT file
+        fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`, 'utf8');
+    } else {
+        console.log(`GITHUB_OUTPUT not found. Unable to set output variable ${name}.`);
     }
   }
   exports.setOutput = setOutput;
