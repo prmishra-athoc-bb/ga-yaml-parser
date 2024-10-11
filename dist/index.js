@@ -276,9 +276,10 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
     process.env[name] = convertedVal;
     const filePath = process.env['GITHUB_ENV'] || '';
     if (filePath) {
+        info(`Adding to output var ${name}`)
         const delimiter = '_GitHubActionsFileCommandDelimeter_';
         const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        file_command_1.issueCommand('GITHUB_OUTPUT', commandValue);
+        file_command_1.issueCommand('ENV', commandValue);
     }
     else {
       command_1.issueCommand('set-output', { name }, convertedVal);
