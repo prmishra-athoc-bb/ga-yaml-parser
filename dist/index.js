@@ -272,18 +272,16 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setOutput(name, value) {
-    const fs = require('fs');
-    const filePath = process.env['GITHUB_OUTPUT'] || '';
-    
-    // If GITHUB_OUTPUT path is missing, create the file in the current working directory
-    if (!filePath) {
-        console.log(`creating the GITHUB_OUTPUT file path and setting it to env var`)
-        const outputFilePath = path.join(process.cwd(), 'GITHUB_OUTPUT');
-        fs.writeFileSync(outputFilePath, `${name}=${value}${os.EOL}`, 'utf8');
-        process.env['GITHUB_OUTPUT'] = outputFilePath; // Set it in env for future use
-    } else {
-        // If file already exists, append the value to it
-        fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`, 'utf8');
+    const convertedVal = utils_1.toCommandValue(value);
+    process.env[name] = convertedVal;
+    const filePath = process.env['GITHUB_ENV'] || '';
+    if (filePath) {
+        const delimiter = '_GitHubActionsFileCommandDelimeter_';
+        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
+        file_command_1.issueCommand('GITHUB_OUTPUT', commandValue);
+    }
+    else {
+      command_1.issueCommand('set-output', { name }, convertedVal);
     }
   }
   exports.setOutput = setOutput;
