@@ -271,25 +271,29 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
    * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
   function setOutput(name, value) {
-    const fs = require('fs')
-    const convertedVal = utils_1.toCommandValue(value);
-    process.env[name] = convertedVal;
-    const filePath = process.env['GITHUB_OUTPUT'] || '';
-    if (filePath) {
-        info(`Adding to output var ${name}`)
-        command_1.issueCommand('set-output', { name }, value);
-        //fs.appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`)
-        // const delimiter = '_GitHubActionsFileCommandDelimeter_';
-        // const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        // file_command_1.issueCommand('ENV', commandValue);
-    }
-    else {
-      info(`missing GITHUB_OUTPUT. Adding to output var ${name} using set-output command`)
-      command_1.issueCommand('set-output', { name }, convertedVal);
-    }
-  }
+    process.stdout.write(os.EOL);
+    command_1.issueCommand('set-output', { name }, value);
+}
+  // function setOutput(name, value) {
+  //   const fs = require('fs')
+  //   const convertedVal = utils_1.toCommandValue(value);
+  //   process.env[name] = convertedVal;
+  //   const filePath = process.env['GITHUB_OUTPUT'] || '';
+  //   if (filePath) {
+  //       info(`Adding to output var ${name}`)
+  //       command_1.issueCommand('set-output', { name }, value);
+  //       //fs.appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`)
+  //       // const delimiter = '_GitHubActionsFileCommandDelimeter_';
+  //       // const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
+  //       // file_command_1.issueCommand('ENV', commandValue);
+  //   }
+  //   else {
+  //     info(`missing GITHUB_OUTPUT. Adding to output var ${name} using set-output command`)
+  //     command_1.issueCommand('set-output', { name }, convertedVal);
+  //   }
+  // }
   exports.setOutput = setOutput;
   /**
    * Enables or disables the echoing of commands into stdout for the rest of the step.
